@@ -13,11 +13,12 @@ class SolarSystem
         double rmoon;
         double rearth;
     public:
-        SolarSystem(double x1, double y1,double m1, double x2,double y2,double m2,double omega);
+        SolarSystem(double x1, double y1,double m1, double x2,double y2,double m2,double omega,double re, double rm);
         void Simulate(int n,double R,double dt);
         void Show();
         void Set(double x1, double y1,double m1, double x2,double y2,double m2,double omega);
         array<double,4> Diff(const array<double,4> &a);
-        void RungeKutta(Particle &par,double dt);
+        void RungeKutta(Particle &par,double dt,double &S);
+        void Save(string name);
 };
 #endif

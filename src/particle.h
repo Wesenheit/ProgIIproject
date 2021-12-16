@@ -1,6 +1,7 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 #include <array>
+#include <random>
 using namespace std;
 class Particle
 {
@@ -10,7 +11,7 @@ class Particle
     public:
         Particle();
         Particle(array<double,4> pos,double mass);
-        Particle(double R);
+        Particle(double R,double M,mt19937 &generator);
         double R();
         double R(const Particle &a);
         double R(const array<double,4> &position);
@@ -18,5 +19,6 @@ class Particle
         void update(array<double,4> a);
         double velocity();
         double angle(const array<double,4> &position);
+        void Show();
 };
 #endif
