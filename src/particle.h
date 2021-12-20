@@ -18,7 +18,6 @@ class Particle
         array<double,4> getpos();
         void update(array<double,4> a);
         double velocity();
-        double angle(const array<double,4> &position);
         void Show();
 };
 #endif

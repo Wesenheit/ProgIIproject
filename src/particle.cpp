@@ -13,10 +13,11 @@ Particle::Particle()
 Particle::Particle(double R,double M,mt19937 &generator)
 {
     double an1=rangle(generator);
-    double an2=rangle(generator);
+    double an2=rangle(generator)/2;
     double temp=generator()%1000000;
     double v=(temp/1000000)*firstspacevel(R,M);
-    coords=array<double,4>{R*cos(an1),R*sin(an1),v*cos(an1-an2),v*sin(an1-an2)};
+    coords=array<double,4>{R*cos(an1),R*sin(an1),-v*sin(an1+an2),+v*cos(an1+an2)};
+   
     mass=0;
 }
 Particle::Particle(array<double,4> pos,double m)
@@ -57,11 +58,6 @@ double Particle::velocity()
 {
     double v=sqrt(coords[2]*coords[2]+coords[3]*coords[3]);
     return v;
-}
-double Particle::angle(const array<double,4> &position)
-{
-    if ((position[1]-coords[1])>0){return atan((position[1]-coords[1])/(position[0]-coords[0]));}
-    else {return -atan((position[1]-coords[1])/(position[0]-coords[0]));}
 }
 
 void Particle::Show()
