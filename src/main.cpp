@@ -5,15 +5,15 @@
 #include <fstream>
 #include "particle.h"
 #include "solarsystem.h"
+#include "moonsystem.h"
 #include "utils.h"
 using namespace std;
 
 int main()
 {
-    double rmoon=1737.4/MD;
-    SolarSystem baza=SolarSystem();
-    baza.Simulate(1000000,AU*1.52,rmoon);
+    MoonSystem baza=MoonSystem();
+    baza.Simulate(2000,2,0.0001);
     baza.Show();
-    //baza.Save("back.bak");
+    baza.Save("wyn.txt");
     return 0;
 }

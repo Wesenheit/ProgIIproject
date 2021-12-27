@@ -1,7 +1,11 @@
 import matplotlib.pyplot as plt
+import math
 from sys import argv
-f=open(argv[1])
-tab=f.readline().split()
-print(tab)
-plt.hist(list(map(float,tab)),bins=20)
+def get(name):
+    tab=[]
+    with open(name) as f:
+        for line in f:
+            tab=[*tab,*line.split()]
+    return list(map(float,tab))
+plt.hist(list(map(lambda x: 360*x/(2*math.pi), get(argv[1]))),bins=50)
 plt.show()

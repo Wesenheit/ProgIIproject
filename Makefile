@@ -1,7 +1,7 @@
 
 SHELL   	= /bin/bash
 CC      	= g++
-CPPFLAGS	= -fPIC -pedantic -Wall -Wextra -march=native -ggdb3 -O3
+CPPFLAGS	= -pedantic -Wall -Wextra -march=native -O3
 PARAFLAGS	= -fopenmp
 TARGET 		= krater
 SOURCES		= $(wildcard src/*.cpp)

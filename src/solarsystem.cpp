@@ -9,7 +9,6 @@
 
 #ifdef PARA
 #include <omp.h>
-#define OMP_NUM 25
 #endif
 
 using namespace std;
@@ -31,14 +30,13 @@ void SolarSystem::RungeKutta(Particle &par,double ds,double &T)
     update_moon(T);
     if (par.R(moon)<30)
     {
-        ds=ds*(1.000001-exp(-par.R(moon)*1000))/10;
+        ds=rmoon/20*(1.000001-exp(-par.R(moon)*1000));
     }
     else
     {
         ds=ds*(1.000001-exp(-par.R(earth)*1000));
     }
     double dt=ds/par.velocity();
-    dt=0.0001;
     array<double,4> position=par.getpos();
     array<double,4> k1=Diff(position);
     array<double,4> k2=Diff(position+dt/2*k1);
@@ -60,26 +58,19 @@ void SolarSystem::Show()
 
 void SolarSystem::Save(string name)
 {
-    ofstream out;
-    out.open(name,ios_base::app);
-    for (auto a:wyn)
+    if (wyn.size()>0)
     {
-        out<<a<<" ";
+        ofstream out;
+        out.open(name,ios_base::app);
+        for (auto a:wyn)
+        {
+            out<<a<<" ";
+        }
+        out<<endl;
+        out.close();
     }
-    out.close();
 }
 
-SolarSystem::SolarSystem(double x1, double y1,double m1, double x2,double y2,double m2,double o,double re, double rm)
-{
-    array<double,4> a={x1,y1,0,0};
-    array<double,4> b={x2,y2,0,0};
-    earth=Particle(a,m1);
-    moon=Particle(b,m2);
-    omega=o;
-    rearth=re;
-    rmoon=rm;
-    omega=0;
-}
 SolarSystem::SolarSystem()
 {
     sun=Particle(array<double,4>{0,0,0,0}, MS );
@@ -109,7 +100,7 @@ void SolarSystem::Simulate(int n,double R, double ds)
     #endif
     mt19937 generator;
 
-    #pragma omp parallel for schedule(dynamic) private(moon,earth,sun,generator)
+    #pragma omp parallel for schedule(dynamic) firstprivate(moon,earth,sun,rmoon,rsun,rearth,omega) shared(wyn)
     for (int i=0;i<n;i++)
     {
         Particle a(R,sun.mass,generator);
@@ -125,7 +116,7 @@ void SolarSystem::Simulate(int n,double R, double ds)
         if (a.R(moon)<rmoon)
         {
             #pragma omp critical
-            wyn.push_back(angle(a,moon)-angle(earth,moon));
+            wyn.push_back(angle(earth,moon,a));
         }
     }
 }

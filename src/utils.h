@@ -1,20 +1,20 @@
 #ifndef UTILS_H
 #define UTILS_H
-#include "particle.h"
+#include <array>
+#include <random>
+using namespace std;
 
+#define G 61801235000   //stała grawitacji
+#define AU 389.152937   //jednostka astronomiczna
+#define MS 333054       //masa słońca
+#define EP 13.55          //okres rotacji ziemi
+#define ME 1            // Masa ziemi
+#define MM 0.01234         //Masa księżyca
+#define MD 38400        //odleglość ziemia księżyc (w km)
+#define OMP_NUM 4 //ilość rdzeni
 
-#define G 61801235000
-#define AU 389152.937
-#define MS 333054
-#define EP 14
-#define ME 1
-#define MM 1/81
-#define MD 38400
-
-void Force(Particle &par,const array<double,4> &position,array<double,4> &temp);
-array<double,4> operator+(array<double,4> a,array<double,4> b);
-array<double,4> operator*(double a,array<double,4> b);
-double rangle(mt19937 &generator);
-double firstspacevel(double R,double M);
-double angle(Particle &one, Particle &two);
+array<double,4> operator+(array<double,4> a,array<double,4> b);                     //dodawanie tablic
+array<double,4> operator*(double a,array<double,4> b);                              //mnożenie tablic przez skalar
+double rangle(mt19937 &generator);                                                  //generuje losowy kąt
+double firstspacevel(double R,double M);                                            //pierwsza predkość kosmiczna w odległości R 
 #endif
