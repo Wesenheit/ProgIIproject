@@ -98,16 +98,20 @@ void SolarSystem::Simulate(int n,double R, double ds)
     #ifdef PARA
     omp_set_num_threads(OMP_NUM);
     #endif
-    mt19937 generator;
-
-    #pragma omp parallel for schedule(dynamic) firstprivate(moon,earth,sun,rmoon,rsun,rearth,omega) shared(wyn)
+    mt19937 generator(time(NULL));
+    #pragma omp parallel for schedule(dynamic) firstprivate(moon,earth,sun,rmoon,rsun,rearth,omega,R) shared(wyn,generator)
     for (int i=0;i<n;i++)
     {
-        Particle a(R,sun.mass,generator);
-        /*
+        Particle a;
+        #pragma omp critical
+        {
+            Particle temp(R,sun.mass,generator);
+            a=temp;
+        }
+        
         #pragma omp critical
         cout<<"Calulating "<<i<<"th particle"<<endl;
-        */
+        
         double T=0;
         while(a.R()<2*AU && a.R()>rsun && a.R(earth)>rearth && a.R(moon)>rmoon && T<3*EP)
         {

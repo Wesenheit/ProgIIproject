@@ -10,6 +10,7 @@ siłą coriolisa. Oprócz tego mamy siłą pochodzącą od mobilnego księżyca 
 #include <random>
 #include <iostream>
 #include <fstream>
+#include <ctime>
 
 #ifdef PARA
 #include <omp.h>
@@ -96,14 +97,21 @@ void MoonSystem::Simulate(int n,double R, double ds)
     #ifdef PARA
     omp_set_num_threads(OMP_NUM);
     #endif
-    mt19937 generator;
-
-    #pragma omp parallel for schedule(dynamic) firstprivate(moon,earth,omega,rmoon,rearth) shared(wyn)
+    mt19937 generator(time(NULL));
+    #pragma omp parallel for schedule(dynamic) firstprivate(moon,earth,omega,rmoon,rearth,R) shared(wyn,generator)
     for (int i=0;i<n;i++)
     {
-        Particle a(R,firstspacevel(1.52*AU,MS),firstspacevel(AU,MS),generator);
+        Particle a;
+        #pragma omp critical
+        {
+            Particle temp(R,firstspacevel(1.52*AU,MS),firstspacevel(AU,MS),generator);
+            a=temp;
+            cout<<a.velocity()<<endl;
+        }
+        
         #pragma omp critical
         cout<<"Calulating "<<i<<"th particle"<<endl;
+        
         double T=0;
         while(a.R(earth)<2*R && a.R(earth)>rearth && a.R(moon)>rmoon && T<3)
         {

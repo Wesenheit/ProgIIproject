@@ -7,5 +7,5 @@ def get(name):
         for line in f:
             tab=[*tab,*line.split()]
     return list(map(float,tab))
-plt.hist(list(map(lambda x: 360*x/(2*math.pi), get(argv[1]))),bins=50)
+plt.hist(list(map(lambda x: 360*x/(2*math.pi), get(argv[1]))),bins=100)
 plt.show()
