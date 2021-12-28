@@ -11,7 +11,7 @@ using namespace std;
 #define ME 1            // Masa ziemi
 #define MM 0.01234         //Masa księżyca
 #define MD 38400        //odleglość ziemia księżyc (w km)
-#define OMP_NUM 4 //ilość rdzeni
+#define OMP_NUM 5 //ilość rdzeni
 
 array<double,4> operator+(array<double,4> a,array<double,4> b);                     //dodawanie tablic
 array<double,4> operator*(double a,array<double,4> b);                              //mnożenie tablic przez skalar

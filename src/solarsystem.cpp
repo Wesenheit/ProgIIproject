@@ -36,7 +36,7 @@ void SolarSystem::RungeKutta(Particle &par,double ds,double &T)
     {
         ds=ds*(1.000001-exp(-par.R(earth)*1000));
     }
-    double dt=ds/par.velocity();
+    double dt=ds/par.velocity()+0.0000000000000001;
     array<double,4> position=par.getpos();
     array<double,4> k1=Diff(position);
     array<double,4> k2=Diff(position+dt/2*k1);
@@ -113,7 +113,7 @@ void SolarSystem::Simulate(int n,double R, double ds)
         cout<<"Calulating "<<i<<"th particle"<<endl;
         
         double T=0;
-        while(a.R()<2*AU && a.R()>rsun && a.R(earth)>rearth && a.R(moon)>rmoon && T<3*EP)
+        while(a.R()<5*R && a.R()>rsun && a.R(earth)>rearth && a.R(moon)>rmoon && T<3*EP)
         {
             RungeKutta(a,ds,T);
         }

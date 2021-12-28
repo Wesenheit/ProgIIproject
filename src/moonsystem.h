@@ -1,5 +1,5 @@
-#ifndef MoonSystem_H
-#define MoonSystem_H
+#ifndef MOONSYSTEM_H
+#define MOONSYSTEM_H
 #include <array>
 #include <vector>
 #include "particle.h"

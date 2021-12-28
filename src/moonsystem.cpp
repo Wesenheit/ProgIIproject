@@ -42,7 +42,7 @@ void MoonSystem::RungeKutta(Particle &par,double ds,double &T)
     {
         ds=ds*(1.000001-exp(-par.R(earth)));   //tutaj tak samo ale zależy to od odległości od ziemi
     }
-    double dt=ds/par.velocity();                //konwertujemy stały krok odległości na krok czasowy
+    double dt=ds/par.velocity()+0.0000000000000001;                //konwertujemy stały krok odległości na krok czasowy plus pewna stała
     array<double,4> position=par.getpos();      //bierzym gdzie znajduje się cząteczka
     array<double,4> k1=Diff(position);          
     array<double,4> k2=Diff(position+dt/2*k1);
@@ -104,16 +104,15 @@ void MoonSystem::Simulate(int n,double R, double ds)
         Particle a;
         #pragma omp critical
         {
-            Particle temp(R,firstspacevel(1.52*AU,MS),firstspacevel(AU,MS),generator);
-            a=temp;
-            cout<<a.velocity()<<endl;
+            Particle temp(R,firstspacevel(1.52*AU,MS),firstspacevel(AU,MS),generator); //bierzemy ciała losowym położeniu oraz losowej prędkości o długości pierwszej prędkości kosmicznej
+            a=temp;                                                                    //na orbicie marsa i transformujemy do układu w którym ziemia spoczywa.
         }
         
         #pragma omp critical
-        cout<<"Calulating "<<i<<"th particle"<<endl;
+        cout<<"Calculating "<<i<<"th particle"<<endl;
         
         double T=0;
-        while(a.R(earth)<2*R && a.R(earth)>rearth && a.R(moon)>rmoon && T<3)
+        while(a.R(earth)<5*R && a.R(earth)>rearth && a.R(moon)>rmoon && T<3) //gdy cząsteczka oddali się na 5 razy początkowy dystans to kończymy, jak wleci w księżyc lub ziemię tak samo oraz gdy miną 3 okresy synodyczne
         {
             RungeKutta(a,ds,T);
         }

@@ -22,8 +22,8 @@ Particle::Particle(double R,double M,mt19937 &generator)
 Particle::Particle(double R,double v,double vk, mt19937 &generator) //generujemy ciało w odległości R z prędkością v w losowym kieunku a potem przenosimy ją do układu ziemi
 {
     double an1=rangle(generator);       //losowy kąt wektora wodzącego
-    double an2=rangle(generator)/2;     //losowy kąt wzgledem wektora wodzacego
-    coords=array<double,4>{R*cos(an1),R*sin(an1),v*cos(an2),v*sin(an2)+vk};
+    double an2=rangle(generator);     //losowy kąt wzgledem wektora wodzacego
+    coords=array<double,4>{R*cos(an1),R*sin(an1),v*cos(an2),v*sin(an2)-vk};
     mass=0; //masa będzie zerowa bo nie ma ona znaczenia
 }
 Particle::Particle(array<double,4> pos,double m)
